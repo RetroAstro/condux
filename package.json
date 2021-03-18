@@ -1,6 +1,6 @@
 {
-  "version": "6.0.0",
-  "name": "react-condux",
+  "version": "7.0.0",
+  "name": "react-hooks-condux",
   "umd:name": "condux",
   "repository": "https://github.com/RetroAstro/condux",
   "description": "State with Hooks, simple but exquisite.",
