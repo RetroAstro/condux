@@ -1,6 +1,6 @@
 {
-  "version": "4.0.0",
-  "name": "condux",
+  "version": "1.0.0",
+  "name": "react-condux",
   "umd:name": "condux",
   "repository": "https://github.com/RetroAstro/condux",
   "description": "State with Hooks, simple but exquisite.",
