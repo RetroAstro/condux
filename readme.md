@@ -116,6 +116,7 @@ export * from './actions'
 
 ```tsx
 // App.tsx
+import React, { useContext }from 'react'
 import { condux, ThunkDispatch } from 'react-hooks-condux'
 
 import {
@@ -170,6 +171,8 @@ export const App: React.FC = () => {
 
 ```tsx
 // index.tsx
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { MultiProvider } from 'react-hooks-condux'
 import { App, CounterProvider } from './App'
 
