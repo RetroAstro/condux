@@ -1,76 +1,194 @@
-# Template: TypeScript Module [![CI](https://github.com/lukeed/typescript-module/workflows/CI/badge.svg)](https://github.com/lukeed/typescript-module/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/typescript-module)](https://codecov.io/gh/lukeed/typescript-module)
+# Condux
+> State with hooks, simple but exquisite.
 
-This is a [clonable template repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) for authoring a `npm` module with TypeScript. Out of the box, it:
+## Installation
 
-* Provides minimally-viable `tsconfig.json` settings
-* Scaffolds a silly arithmetic module (`src/index.ts`)
-* Scaffolds test suites for full test coverage (`test/index.ts`)
-* Scaffolds a GitHub Action for Code Integration (CI) that:
-  * checks if compilation is successful
-  * runs the test suite(s)
-  * reports test coverage
-* Generates type definitions (`types/*.d.ts`)
-* Generates multiple distribution formats:
-  * ES Module (`dist/index.mjs`)
-  * CommonJS (`dist/index.js`)
-  * UMD (`dist/index.min.js`)
-
-All configuration is accessible via the `rollup.config.js` and a few `package.json` keys:
-
-* `name` &mdash; the name of your module
-* `main` &mdash; the destination file for your CommonJS build
-* `module` &mdash; the destination file for your ESM build (optional but recommended)
-* `unpkg` &mdash; the destination file for your UMD build (optional for [unpkg.com](https://unpkg.com/))
-* `umd:name` &mdash; the UMD global name for your module (optional)
-
-## Setup
-
-1. [Clone this template](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template)
-2. Replace all instances of `TODO` within the `license` and `package.json` files
-3. Create [CodeCov](https://codecov.io) account (free for OSS)
-4. Copy the provided CodeCov token as the `CODECOV_TOKEN` [repository secret](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) (for CI reporting)
-5. Replace `src/index.ts` and `test/index.ts` with your own code! 🎉
-
-## Commands
-
-### build
-
-Builds your module for distribution in multiple formats (ESM, CommonJS, and UMD).
-
-```sh
-$ npm run build
+```
+npm i react-hooks-condux -S
 ```
 
-### test
+## Example
 
-Runs your test suite(s) (`/tests/**`) against your source code (`/src/**`).<br>Doing so allows for accurate code coverage.
-
-> **Note:** Coverage is only collected and reported through the "CI" Github Action (`.github/workflows/ci.yml`).
-
-```sh
-$ npm test
+```ts
+// Counter/actionTypes.ts
+export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
+export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
+export const CLEAR_COUNTER = 'CLEAR_COUNTER'
 ```
 
-## Publishing
+```ts
+// Counter/types.ts
+import { INCREMENT_COUNTER, DECREMENT_COUNTER, CLEAR_COUNTER } from './actionTypes'
 
-> **Important:** Please finish [Setup](#setup) before continuing!
+export * from './actionTypes'
 
-Once all `TODO` notes have been updated & your new module is ready to be shared, all that's left to do is decide its new version &mdash; AKA, do the changes consitute a `patch`, `minor`, or `major` release?
+export interface IncrementCounterAction {
+  type: typeof INCREMENT_COUNTER
+}
 
-Once decided, you can run the following:
+export interface DecrementCounterAction {
+  type: typeof DECREMENT_COUNTER
+}
 
-```sh
-$ npm version <patch|minor|major> && git push origin master --tags && npm publish
-# Example:
-# npm version patch && git push origin master --tags && npm publish
+export interface ClearCounterAction {
+  type: typeof CLEAR_COUNTER
+}
+
+export type CounterActionTypes = IncrementCounterAction | DecrementCounterAction | ClearCounterAction
+
+export interface CounterState {
+  count: number
+}
 ```
 
-This command sequence will:
-* version your module, updating the `package.json` "version"
-* create and push a `git` tag (matching the new version) to your repository
-* build your module (via the `prepublishOnly` script)
-* publish the module to the npm registry
+```ts
+// Counter/actions.ts
+import {
+  IncrementCounterAction,
+  DecrementCounterAction,
+  ClearCounterAction,
+  CounterState,
+  INCREMENT_COUNTER,
+  DECREMENT_COUNTER,
+  CLEAR_COUNTER,
+} from './types'
+
+export const incrementAction = (): IncrementCounterAction => {
+  return {
+    type: INCREMENT_COUNTER
+  }
+}
+
+export const decrementAction = (): DecrementCounterAction => {
+  return {
+    type: DECREMENT_COUNTER
+  }
+}
+
+export const clearAction = (): ClearCounterAction => {
+  return {
+    type: CLEAR_COUNTER
+  }
+}
+
+export const asyncIncrementAction = () => (dispatch: any, state: () => CounterState) => {
+  console.log(`async state: ${state().count}`)
+  dispatch(incrementAction())
+  setTimeout(() => console.log(`async state: ${state().count}`), 0)
+}
+```
+
+```ts
+// Counter/reducers.ts
+import {
+  CounterState,
+  CounterActionTypes,
+
+  INCREMENT_COUNTER,
+  DECREMENT_COUNTER,
+  CLEAR_COUNTER,
+} from './types'
+
+export const counterState: CounterState = {
+  count: 0
+}
+
+export const counterReducer = (state: CounterState, action: CounterActionTypes) => {
+  switch (action.type) {
+    case INCREMENT_COUNTER:
+      return { ...state, count: state.count + 1 }
+    case DECREMENT_COUNTER:
+      return { ...state, count: state.count - 1 }
+    case CLEAR_COUNTER:
+      return { count: 0 }
+    default:
+      return { ...state }
+  }
+}
+```
+
+```ts
+// Counter/index.ts
+export * from './types'
+export * from './reducers'
+export * from './actions'
+```
+
+```tsx
+// App.tsx
+import { condux, ThunkDispatch } from 'react-hooks-condux'
+
+import {
+  CounterState,
+  CounterActionTypes,
+  counterReducer,
+  counterState,
+  decrementAction,
+  asyncIncrementAction
+} from './Counter/index'
+
+export const [CounterContext, CounterProvider] = condux<CounterState, CounterActionTypes | ThunkDispatch>(counterReducer, counterState)
+
+const Counter: React.FC = () => {
+  const Status = () => {
+    const state = useContext(CounterContext.state)
+    return (
+      <span>{state.count}</span>
+    )
+  }
+
+  const Decrement = () => {
+    const dispatch = useContext(CounterContext.dispatch)
+    return (
+      <button onClick={() => dispatch(decrementAction())} type='button'>-</button>
+    )
+  }
+
+  const Increment = () => {
+    console.log('increment')
+    const dispatch = useContext(CounterContext.dispatch)
+    return (
+      <button onClick={() => dispatch(asyncIncrementAction())} type='button'>+</button>
+    )
+  }
+
+  return (
+    <>
+      <Decrement />
+      <Status />
+      <Increment />
+    </>
+  )
+}
+
+export const App: React.FC = () => {
+  return (
+    <Counter />
+  )
+}
+```
+
+```tsx
+// index.tsx
+import { MultiProvider } from 'react-hooks-condux'
+import { App, CounterProvider } from './App'
+
+ReactDOM.render(
+  <MultiProvider
+    providers={[
+      <CounterProvider />
+    ]}
+  >
+    <App />
+  </MultiProvider>,
+  document.getElementById('root')
+)
+```
+
+**Note :**  
+
+Since our state and dispatch are separated, we can easily get the performance optimization.
 
 ## License
 
-MIT © [Luke Edwards](https://lukeed.com)
+MIT © [RetroAstro](https://github.com/RetroAstro)
