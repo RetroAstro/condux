@@ -5,9 +5,6 @@
       "module": "commonjs",
       "sourceMap": true,
     },
-    "include": [
-      "test/**/*"
-    ]
   },
   "compilerOptions": {
     "target": "esnext",
@@ -18,7 +15,8 @@
     "moduleResolution": "node",
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "strict": true
+    "strict": true,
+    "jsx": "react",
   },
   "include": [
     "@types/**/*",

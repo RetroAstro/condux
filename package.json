@@ -1,18 +1,18 @@
 {
-  "version": "0.0.0",
-  "name": "TODO",
-  "umd:name": "TODO",
-  "repository": "TODO_USERNAME/TODO_REPO",
-  "description": "TODO_MODULE_DESCRIPTION",
+  "version": "1.0.0",
+  "name": "condux",
+  "umd:name": "condux",
+  "repository": "https://github.com/RetroAstro/condux",
+  "description": "State with Hooks, simple but exquisite.",
   "unpkg": "dist/index.min.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "license": "MIT",
   "author": {
-    "name": "TODO_YOUR_NAME",
-    "email": "YOUR_EMAIL@TODO.com",
-    "url": "https://TODO_WEBSITE.com"
+    "name": "RetroAstro",
+    "email": "retroastroer@gmail.com",
+    "url": "https://github.com/RetroAstro"
   },
   "files": [
     "dist",
@@ -30,15 +30,21 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "prepublishOnly": "npm run build",
-    "test": "uvu -r ts-node/register test"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "TODO",
+    "condux",
     "module",
     "keywords"
   ],
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "redux": "^4.0.5"
+  },
   "devDependencies": {
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.1",
     "@rollup/plugin-node-resolve": "8.1.0",
     "rollup": "2.21.0",
     "rollup-plugin-terser": "6.1.0",
