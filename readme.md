@@ -39,6 +39,10 @@ export type CounterActionTypes = IncrementCounterAction | DecrementCounterAction
 export interface CounterState {
   count: number
 }
+
+export interface RootState {
+  value: CounterState
+}
 ```
 
 ```ts
@@ -47,7 +51,7 @@ import {
   IncrementCounterAction,
   DecrementCounterAction,
   ClearCounterAction,
-  CounterState,
+  RootState,
   INCREMENT_COUNTER,
   DECREMENT_COUNTER,
   CLEAR_COUNTER,
@@ -71,16 +75,22 @@ export const clearAction = (): ClearCounterAction => {
   }
 }
 
-export const asyncIncrementAction = () => (dispatch: any, state: () => CounterState) => {
-  console.log(`async state: ${state().count}`)
+export const asyncIncrementAction = () => (dispatch: any, state: () => RootState) => {
+  console.log(`async state: ${state().value.count}`)
   dispatch(incrementAction())
-  setTimeout(() => console.log(`async state: ${state().count}`), 0)
+  setTimeout(() => {
+    console.log(`async state: ${state().value.count}`)
+  }, 0)
 }
+
 ```
 
 ```ts
 // Counter/reducers.ts
+import { combineReducers } from '../../src/index'
+
 import {
+  RootState,
   CounterState,
   CounterActionTypes,
 
@@ -89,8 +99,8 @@ import {
   CLEAR_COUNTER,
 } from './types'
 
-export const counterState: CounterState = {
-  count: 0
+export const rootState: RootState = {
+  value: { count: 0 }
 }
 
 export const counterReducer = (state: CounterState, action: CounterActionTypes) => {
@@ -105,6 +115,8 @@ export const counterReducer = (state: CounterState, action: CounterActionTypes) 
       return { ...state }
   }
 }
+
+export const rootReducer = combineReducers({ value: counterReducer })
 ```
 
 ```ts
@@ -116,25 +128,25 @@ export * from './actions'
 
 ```tsx
 // App.tsx
-import React, { useContext }from 'react'
-import { condux, ThunkDispatch } from 'react-hooks-condux'
+import React, { useContext } from 'react'
+import { condux, ThunkDispatch } from '../src/index'
 
 import {
-  CounterState,
   CounterActionTypes,
-  counterReducer,
-  counterState,
+  rootReducer,
+  rootState,
+  RootState,
   decrementAction,
   asyncIncrementAction
 } from './Counter/index'
 
-export const [CounterContext, CounterProvider] = condux<CounterState, CounterActionTypes | ThunkDispatch>(counterReducer, counterState)
+export const [CounterContext, CounterProvider] = condux<RootState, CounterActionTypes | ThunkDispatch>(rootReducer, rootState)
 
 const Counter: React.FC = () => {
   const Status = () => {
     const state = useContext(CounterContext.state)
     return (
-      <span>{state.count}</span>
+      <span>{state.value.count}</span>
     )
   }
 

@@ -1,4 +1,7 @@
+import { combineReducers } from '../../src/index'
+
 import {
+  RootState,
   CounterState,
   CounterActionTypes,
 
@@ -7,8 +10,8 @@ import {
   CLEAR_COUNTER,
 } from './types'
 
-export const counterState: CounterState = {
-  count: 0
+export const rootState: RootState = {
+  value: { count: 0 }
 }
 
 export const counterReducer = (state: CounterState, action: CounterActionTypes) => {
@@ -23,3 +26,6 @@ export const counterReducer = (state: CounterState, action: CounterActionTypes) 
       return { ...state }
   }
 }
+
+export const rootReducer = combineReducers({ value: counterReducer })
+

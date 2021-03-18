@@ -2,21 +2,21 @@ import React, { useContext } from 'react'
 import { condux, ThunkDispatch } from '../src/index'
 
 import {
-  CounterState,
   CounterActionTypes,
-  counterReducer,
-  counterState,
+  rootReducer,
+  rootState,
+  RootState,
   decrementAction,
   asyncIncrementAction
 } from './Counter/index'
 
-export const [CounterContext, CounterProvider] = condux<CounterState, CounterActionTypes | ThunkDispatch>(counterReducer, counterState)
+export const [CounterContext, CounterProvider] = condux<RootState, CounterActionTypes | ThunkDispatch>(rootReducer, rootState)
 
 const Counter: React.FC = () => {
   const Status = () => {
     const state = useContext(CounterContext.state)
     return (
-      <span>{state.count}</span>
+      <span>{state.value.count}</span>
     )
   }
 

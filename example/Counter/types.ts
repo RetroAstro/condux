@@ -19,3 +19,7 @@ export type CounterActionTypes = IncrementCounterAction | DecrementCounterAction
 export interface CounterState {
   count: number
 }
+
+export interface RootState {
+  value: CounterState
+}

@@ -2,7 +2,7 @@ import {
   IncrementCounterAction,
   DecrementCounterAction,
   ClearCounterAction,
-  CounterState,
+  RootState,
   INCREMENT_COUNTER,
   DECREMENT_COUNTER,
   CLEAR_COUNTER,
@@ -26,10 +26,10 @@ export const clearAction = (): ClearCounterAction => {
   }
 }
 
-export const asyncIncrementAction = () => (dispatch: any, state: () => CounterState) => {
-  console.log(`async state: ${state().count}`)
+export const asyncIncrementAction = () => (dispatch: any, state: () => RootState) => {
+  console.log(`async state: ${state().value.count}`)
   dispatch(incrementAction())
   setTimeout(() => {
-    console.log(`async state: ${state().count}`)
+    console.log(`async state: ${state().value.count}`)
   }, 0)
 }
