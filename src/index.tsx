@@ -30,7 +30,7 @@ export function condux<T, K>(
 		ConduxContext<T, Thunk<K>>,
 		ProviderFC<React.ReactNode>
 	] {
-	const StateContext = React.createContext<T>({} as any)
+	const StateContext = React.createContext<T>({} as T)
 	const DispatchContext = React.createContext<Thunk<K>>((_) => { })
 
 	const Provider: ProviderFC<React.ReactNode> = ({ children }) => {
