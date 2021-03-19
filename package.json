@@ -33,7 +33,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "condux",
+    "react-hooks-condux",
     "module",
     "keywords"
   ],
