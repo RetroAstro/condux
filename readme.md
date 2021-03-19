@@ -185,7 +185,7 @@ export * from './selectors'
 ```tsx
 // App.tsx
 import React, { useContext } from 'react'
-import { condux, ThunkDispatch, Cache } from 'react-hooks-condux'
+import { condux, Cache } from 'react-hooks-condux'
 
 import {
   RootState,
@@ -200,7 +200,7 @@ import {
   themeLightAction,
 } from './Counter/index'
 
-export const [CounterContext, CounterProvider] = condux<RootState, CounterActionTypes | ThunkDispatch>(rootReducer, rootState)
+export const [CounterContext, CounterProvider] = condux<RootState, CounterActionTypes>(rootReducer, rootState)
 
 const Decrement = () => {
   console.log('decrement')
