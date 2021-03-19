@@ -8,9 +8,9 @@ type ProviderFC<T> = React.FC<{ children?: T }>
 
 type MultiProviderFC<T> = React.FC<{ children: T; providers: T[] }>
 
-type Thunk<T> = (action: T) => void
+type ThunkDispatch = (dispatch: React.Dispatch<any>, state: any) => void
 
-export type ThunkDispatch = (dispatch: React.Dispatch<any>, state: any) => void
+type Thunk<T> = (action: T | ThunkDispatch) => void
 
 interface CacheFCProps<T, K, P> {
 	context: React.Context<T>
@@ -41,9 +41,9 @@ export function condux<T, K>(
 			ref.current = state
 		}, [state])
 
-		const thunk = React.useCallback((action: K) => {
+		const thunk: Thunk<K> = React.useCallback((action) => {
 			if (typeof action === 'function') {
-				action(dispatch, () => ref.current)
+				(action as ThunkDispatch)(dispatch, () => ref.current)
 			} else {
 				dispatch(action)
 			}
