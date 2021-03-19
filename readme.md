@@ -185,7 +185,7 @@ export * from './selectors'
 ```tsx
 // App.tsx
 import React, { useContext } from 'react'
-import { condux, ThunkDispatch } from 'react-hooks-condux'
+import { condux, ThunkDispatch, Cache } from 'react-hooks-condux'
 
 import {
   RootState,
