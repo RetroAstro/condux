@@ -87,7 +87,7 @@ export const asyncIncrementAction = () => (dispatch: any, state: () => RootState
 
 ```ts
 // Counter/reducers.ts
-import { combineReducers } from '../../src/index'
+import { combineReducers } from 'react-hooks-condux'
 
 import {
   RootState,
@@ -129,7 +129,7 @@ export * from './actions'
 ```tsx
 // App.tsx
 import React, { useContext } from 'react'
-import { condux, ThunkDispatch } from '../src/index'
+import { condux, ThunkDispatch } from 'react-hooks-condux'
 
 import {
   CounterActionTypes,
@@ -200,7 +200,7 @@ ReactDOM.render(
 )
 ```
 
-**Note :**  
+**Note :**
 
 Since our state and dispatch are separated, we can easily get the performance optimization.
 
