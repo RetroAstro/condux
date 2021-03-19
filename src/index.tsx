@@ -78,7 +78,7 @@ export const MultiProvider: MultiProviderFC<React.ReactNode> = ({ children, prov
 	let node = children
 
 	providers.reverse().forEach(provider => {
-		node = React.cloneElement(provider as any, undefined, node);
+		node = React.cloneElement(provider as any, undefined, node)
 	})
 
 	return <>{node}</>
