@@ -1,45 +1,78 @@
 import React, { useContext } from 'react'
-import { condux, ThunkDispatch } from '../src/index'
+import { condux, ThunkDispatch, Cache } from '../src/index'
 
 import {
+  RootState,
   CounterActionTypes,
   rootReducer,
   rootState,
-  RootState,
+  Theme,
+  themeSelector,
   decrementAction,
-  asyncIncrementAction
+  asyncIncrementAction,
+  themeDarkAction,
+  themeLightAction,
 } from './Counter/index'
 
 export const [CounterContext, CounterProvider] = condux<RootState, CounterActionTypes | ThunkDispatch>(rootReducer, rootState)
 
+const Decrement = () => {
+  console.log('decrement')
+  const dispatch = useContext(CounterContext.dispatch)
+  return (
+    <button onClick={() => dispatch(decrementAction())} type='button'>-</button>
+  )
+}
+
+const Increment = () => {
+  console.log('increment')
+  const dispatch = useContext(CounterContext.dispatch)
+  return (
+    <button onClick={() => dispatch(asyncIncrementAction())} type='button'>+</button>
+  )
+}
+
+const Status = () => {
+  console.log('status')
+  const state = useContext(CounterContext.state)
+  return <>{state.value.count}</>
+}
+
+const ThemeText: React.FC<{ theme: Theme }> = ({ theme }) => {
+  console.log('theme text')
+  return (
+    <text>{theme}</text>
+  )
+}
+
+const ThemeButton: React.FC = () => {
+  const state = useContext(CounterContext.state)
+  const dispatch = useContext(CounterContext.dispatch)
+  return (
+    <button onClick={() => {
+      if (state.value.theme == Theme.dark) {
+        dispatch(themeLightAction())
+      }
+      if (state.value.theme == Theme.light) {
+        dispatch(themeDarkAction())
+      }
+    }} type='button'>Change Theme</button>
+  )
+}
+
 const Counter: React.FC = () => {
-  const Status = () => {
-    const state = useContext(CounterContext.state)
-    return (
-      <span>{state.value.count}</span>
-    )
-  }
-
-  const Decrement = () => {
-    const dispatch = useContext(CounterContext.dispatch)
-    return (
-      <button onClick={() => dispatch(decrementAction())} type='button'>-</button>
-    )
-  }
-
-  const Increment = () => {
-    console.log('increment')
-    const dispatch = useContext(CounterContext.dispatch)
-    return (
-      <button onClick={() => dispatch(asyncIncrementAction())} type='button'>+</button>
-    )
-  }
-
   return (
     <>
       <Decrement />
       <Status />
       <Increment />
+      <Cache
+        context={CounterContext.state}
+        selector={themeSelector}
+      >
+        {value => <ThemeText theme={value} />}
+      </Cache>
+      <ThemeButton />
     </>
   )
 }

@@ -1,4 +1,10 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER, CLEAR_COUNTER } from './actionTypes'
+import {
+  INCREMENT_COUNTER,
+  DECREMENT_COUNTER,
+  CLEAR_COUNTER,
+  THEME_DARK,
+  THEME_LIGHT,
+} from './actionTypes'
 
 export * from './actionTypes'
 
@@ -14,12 +20,27 @@ export interface ClearCounterAction {
   type: typeof CLEAR_COUNTER
 }
 
-export type CounterActionTypes = IncrementCounterAction | DecrementCounterAction | ClearCounterAction
+export interface ThemeDarkAction {
+  type: typeof THEME_DARK
+}
+
+export interface ThemeLightAction {
+  type: typeof THEME_LIGHT
+}
+
+export enum Theme {
+  dark = 'dark',
+  light = 'light'
+}
 
 export interface CounterState {
   count: number
+  theme: Theme
 }
 
 export interface RootState {
   value: CounterState
 }
+
+export type CounterActionTypes =
+  IncrementCounterAction | DecrementCounterAction | ClearCounterAction | ThemeDarkAction | ThemeLightAction

@@ -2,20 +2,26 @@ import * as React from 'react'
 
 export { combineReducers } from 'redux'
 
+type Reducer<S, A> = (prevState: S, action: A) => S
+
 type ProviderFC<T> = React.FC<{ children?: T }>
 
 type MultiProviderFC<T> = React.FC<{ children: T; providers: T[] }>
 
-type Reducer<S, A> = (prevState: S, action: A) => S
-
 type Thunk<T> = (action: T) => void
+
+export type ThunkDispatch = (dispatch: React.Dispatch<any>, state: any) => void
+
+interface CacheFCProps<T, K, P> {
+	context: React.Context<T>
+	selector(state: T): K
+	children: (state: K) => P | P
+}
 
 interface ConduxContext<T, K> {
 	state: React.Context<T>
 	dispatch: React.Context<K>
 }
-
-export type ThunkDispatch = (dispatch: React.Dispatch<any>, state: any) => void
 
 export function condux<T, K>(
 	reducer: Reducer<any, any>,
@@ -76,4 +82,13 @@ export const MultiProvider: MultiProviderFC<React.ReactNode> = ({ children, prov
 	})
 
 	return <>{node}</>
+}
+
+export function Cache<T, K>({ context, selector, children }: CacheFCProps<T, K, React.ReactNode>) {
+	const state = React.useContext(context)
+	const selectedState = selector(state)
+
+	return React.useMemo(() => (
+		<>{children(selectedState)}</>
+	), [selectedState])
 }
