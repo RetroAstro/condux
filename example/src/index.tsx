@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { MultiProvider } from '../src/index'
+import { MultiProvider } from 'react-hooks-condux'
 import { App, CounterProvider } from './App'
 
 ReactDOM.render(
@@ -11,5 +11,5 @@ ReactDOM.render(
   >
     <App />
   </MultiProvider>,
-  document.getElementById('root')
+  document.getElementById('app')
 )

@@ -1,4 +1,4 @@
-import { combineReducers } from '../../src/index'
+import { combineReducers } from 'react-hooks-condux'
 
 import {
   RootState,

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { condux, ThunkDispatch, Cache } from '../src/index'
+import { condux, ThunkDispatch, Cache } from 'react-hooks-condux'
 
 import {
   RootState,
@@ -41,7 +41,7 @@ const Status = () => {
 const ThemeText: React.FC<{ theme: Theme }> = ({ theme }) => {
   console.log('theme text')
   return (
-    <text>{theme}</text>
+    <div>{theme}</div>
   )
 }
 

@@ -1,0 +1,29 @@
+{
+    "ts-node": {
+        "transpileOnly": true,
+        "compilerOptions": {
+            "module": "commonjs",
+            "sourceMap": true,
+        },
+    },
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "declaration": true,
+        "declarationDir": "types",
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "strict": true,
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "@types/**/*",
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
