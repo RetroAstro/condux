@@ -41,7 +41,7 @@ export function condux<T, K>(
 			ref.current = state
 		}, [state])
 
-		const thunk: Thunk<K> = React.useCallback((action) => {
+		const thunk: Thunk<K> = React.useCallback(action => {
 			if (typeof action === 'function') {
 				(action as ThunkDispatch)(dispatch, () => ref.current)
 			} else {
