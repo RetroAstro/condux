@@ -13,5 +13,8 @@
   "scripts": {
     "dev": "parcel src/index.html --out-dir build/debug",
     "build": "parcel build src/index.html --out-dir build/release --public-url ./"
+  },
+  "alias": {
+    "react": "./node_modules/react"
   }
 }
