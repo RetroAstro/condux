@@ -1,0 +1,31 @@
+export type Reducer<S, A> = (prevState: S, action: A) => S
+
+export type ProviderFC<T> = React.FC<{ children?: T }>
+
+export type MultiProviderFC<T> = React.FC<{ children: T; providers: T[] }>
+
+export type ThunkDispatch = (dispatch: React.Dispatch<any>, state: any) => void
+
+export type Thunk<T> = (action: T | ThunkDispatch) => void
+
+export const ShallowEqual = 'ShallowEqual'
+
+export type ShallowEqualType = typeof ShallowEqual
+
+export interface CacheFCProps<T, K, P> {
+	context: React.Context<T>
+	selector(state: T): K
+	children: (state?: K) => P | P
+}
+
+export interface ConduxContext<T, K> {
+	state: React.Context<T>
+	dispatch: React.Context<K>
+}
+
+export interface SelectorProps<T, K> {
+	context: React.Context<T>
+	selector(state: T): K
+	equal?: ShallowEqualType
+}
+
