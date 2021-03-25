@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { isObject } from './utils'
 
 import {
 	Reducer,
@@ -11,8 +12,6 @@ import {
 	ShallowEqual,
 	SelectorProps,
 } from './types'
-
-import { isObject } from './utils'
 
 const wm = new WeakMap()
 
