@@ -40,10 +40,10 @@ export function condux<T, K>(
 		const [state, dispatch] = React.useReducer(reducer, initialState)
 		const ref = React.useRef()
 
-		const getState = React.useCallback(() => ref.current, [])
+		const currentState = React.useCallback(() => ref.current, [])
 
 		React.useEffect(() => {
-			wm.set(StateContext, getState)
+			wm.set(StateContext, currentState)
 		}, [])
 
 		React.useEffect(() => {
@@ -56,7 +56,7 @@ export function condux<T, K>(
 
 		const thunk: Thunk<K> = React.useCallback(action => {
 			if (typeof action === 'function') {
-				(action as ThunkDispatch)(dispatch, getState)
+				(action as ThunkDispatch)(dispatch, currentState)
 			} else {
 				dispatch(action)
 			}
@@ -79,16 +79,21 @@ export function condux<T, K>(
 	return [Context, Provider]
 }
 
+export function getState<T>(context: React.Context<T>): T | undefined {
+	const state = wm.get(context)
+	return state()
+}
+
 export function useSelector<T, K>({ selector, context, equal }: SelectorProps<T, K>) {
 	const [, forceRender] = React.useReducer(s => s + 1, 0)
 	const ref = React.useRef<K>()
 
 	React.useEffect(() => {
 		const unsubscribe = subscribe(() => {
-			const state = wm.get(context)
+			const state = getState(context)
 
 			if (state) {
-				const selectedState = selector(state())
+				const selectedState = selector(state)
 				let deps = [selectedState]
 
 				if (equal === ShallowEqual && isObject(selectedState)) {
