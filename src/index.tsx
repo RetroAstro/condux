@@ -9,8 +9,8 @@ import {
 	Thunk,
 	CacheFCProps,
 	ConduxContext,
-	ShallowEqual,
 	SelectorProps,
+	ShallowEqual,
 } from './types'
 
 const wm = new WeakMap()
@@ -79,7 +79,7 @@ export function condux<T, K>(
 	return [Context, Provider]
 }
 
-export function useSelector<T, K>({ context, selector, equal }: SelectorProps<T, K>) {
+export function useSelector<T, K>({ selector, context, equal }: SelectorProps<T, K>) {
 	const [, forceRender] = React.useReducer(s => s + 1, 0)
 	const ref = React.useRef<K>()
 
@@ -112,9 +112,9 @@ export function Cache<T, K>({ context, selector, children }: CacheFCProps<T, K, 
 	const state = React.useContext(context)
 	const selectedState = selector(state)
 
-	return React.useMemo(() => (
-		<>{children(selectedState)}</>
-	), [selectedState, ...children().props])
+	const node = children(selectedState)
+
+	return React.useMemo(() => node, [selectedState, ...node.props])
 }
 
 export const MultiProvider: MultiProviderFC<React.ReactNode> = ({ children, providers }) => {

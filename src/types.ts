@@ -15,7 +15,7 @@ export type ShallowEqualType = typeof ShallowEqual
 export interface CacheFCProps<T, K, P> {
 	context: React.Context<T>
 	selector(state: T): K
-	children: (state?: K) => P | P
+	children: (state: K) => P | P
 }
 
 export interface ConduxContext<T, K> {
@@ -24,8 +24,8 @@ export interface ConduxContext<T, K> {
 }
 
 export interface SelectorProps<T, K> {
-	context: React.Context<T>
 	selector(state: T): K
+	context: React.Context<T>
 	equal?: ShallowEqualType
 }
 
