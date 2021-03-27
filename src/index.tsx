@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { equalFn, shallowEqualFn } from './utils'
+import { isObject, equalFn, shallowEqualFn } from './utils'
 
 import {
 	Reducer,
@@ -110,14 +110,20 @@ export function useSelector<T, K>({ selector, context, equal }: SelectorProps<T,
 	return ref.current
 }
 
-export function Cache<T, K>({ context, selector, children }: CacheFCProps<T, K>) {
+export function Cache<T, K>({ context, selector, equal, children }: CacheFCProps<T, K>) {
 	const state = React.useContext(context)
 	const selectedState = selector(state)
 
 	const node = children(selectedState)
-	const deps = Object.values(node.props)
+	const props = Object.values(node.props)
 
-	return React.useMemo(() => node, [selectedState, ...deps])
+	let deps = [selectedState, ...props]
+
+	if (equal === ShallowEqual && isObject(selectedState)) {
+		deps = Object.values(selectedState).concat(props)
+	}
+
+	return React.useMemo(() => node, deps)
 }
 
 export const MultiProvider: MultiProviderFC<React.ReactNode> = ({ children, providers }) => {

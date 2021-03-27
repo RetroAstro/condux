@@ -15,6 +15,7 @@ export type ShallowEqualType = typeof ShallowEqual
 export interface CacheFCProps<T, K> {
 	context: React.Context<T>
 	selector(state: T): K
+	equal?: ShallowEqualType
 	children: (state: K) => React.ReactElement
 }
 
