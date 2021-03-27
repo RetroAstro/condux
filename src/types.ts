@@ -12,10 +12,10 @@ export const ShallowEqual = 'ShallowEqual'
 
 export type ShallowEqualType = typeof ShallowEqual
 
-export interface CacheFCProps<T, K, P> {
+export interface CacheFCProps<T, K> {
 	context: React.Context<T>
 	selector(state: T): K
-	children: (state: K) => P | P
+	children: (state: K) => React.ReactElement
 }
 
 export interface ConduxContext<T, K> {

@@ -110,7 +110,7 @@ export function useSelector<T, K>({ selector, context, equal }: SelectorProps<T,
 	return ref.current
 }
 
-export function Cache<T, K>({ context, selector, children }: CacheFCProps<T, K, React.ReactElement>) {
+export function Cache<T, K>({ context, selector, children }: CacheFCProps<T, K>) {
 	const state = React.useContext(context)
 	const selectedState = selector(state)
 
