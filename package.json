@@ -37,20 +37,24 @@
     "module",
     "keywords"
   ],
-  "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "@types/react": "^17.0.1",
-    "@types/react-dom": "^17.0.1",
     "@rollup/plugin-node-resolve": "8.1.0",
+    "@types/react": ">=17.0.0",
+    "@types/react-dom": ">=17.0.0",
+    "@types/redux": "^3.6.0",
     "rollup": "2.21.0",
     "rollup-plugin-terser": "6.1.0",
     "rollup-plugin-typescript2": "0.27.1",
     "ts-node": "8.10.2",
     "typescript": "3.9.6",
     "uvu": "0.0.19"
+  },
+  "dependencies": {
+    "react": "^17.0.2"
   }
 }
